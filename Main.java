@@ -10,7 +10,7 @@ import java.util.concurrent.Semaphore;
  * @author Paul
  */
 public class Main {
-  static final String filename = "test_.ppm";
+  static final String filename = "/fs-1/2/kerola/rio_testdata/7976x4480.ppm";
 
   public static void main(String[] args) throws Exception{
     // read the image file and initialize a helper image of the same size
@@ -21,7 +21,7 @@ public class Main {
 
     t_start = System.nanoTime();
     // set number of threads and repetitions for operations
-    final int threads = 4;
+    final int threads = 16;
     final int phases = 5;
 
     System.out.println("Processing with "+threads+" threads..");
@@ -57,10 +57,10 @@ public class Main {
     System.out.println("Time: "+(t_end - t_start)/1000000 + " ms");
 
     // save processed image
-    t_start = System.nanoTime();
-    im.Save("processed.ppm");
-    t_end = System.nanoTime();
+   // t_start = System.nanoTime();
+   // im.Save("processed.ppm");
+   // t_end = System.nanoTime();
 
-    System.out.println("Image saved in: "+(t_end - t_start)/1000000 + " ms");
+   // System.out.println("Image saved in: "+(t_end - t_start)/1000000 + " ms");
   }
 }
