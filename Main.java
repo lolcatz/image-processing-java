@@ -38,6 +38,7 @@ public class Main {
     // create barrier thread for sync
     Barrier b = new Barrier(stop, gates, threads, phases, helper, im);
     Thread barrierThread = new Thread(b);
+
     // initialize worker threads for smoothen, assign each a slice of the image
     Thread[] ts = new Thread[threads];
     for (int i = 0; i < threads; i++)
@@ -55,12 +56,13 @@ public class Main {
     // end timing, output time
     t_end = System.nanoTime();
     System.out.println("Time: "+(t_end - t_start)/1000000 + " ms");
-
+/*
     // save processed image
-   // t_start = System.nanoTime();
-   // im.Save("processed.ppm");
-   // t_end = System.nanoTime();
+    t_start = System.nanoTime();
+    im.Save("processed.ppm");
+    t_end = System.nanoTime();
 
-   // System.out.println("Image saved in: "+(t_end - t_start)/1000000 + " ms");
+    System.out.println("Image saved in: "+(t_end - t_start)/1000000 + " ms");
+*/  
   }
 }

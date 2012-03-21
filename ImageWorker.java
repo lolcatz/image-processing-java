@@ -37,9 +37,9 @@ public class ImageWorker implements Runnable {
       try { gate.acquire(); } catch (Exception e) {}
       // process a slice of the image
       if (j < phases)
-        helper = Image.Smoothen(helper, im, row_start, row_end);
+        helper = Image.Smoothen_(helper, im, row_start, row_end);
       else
-        helper = Image.Sharpen(helper, im, row_start, row_end);
+        helper = Image.Sharpen_(helper, im, row_start, row_end);
       // swap references for next round
       Image temp = helper;
       helper = im;
