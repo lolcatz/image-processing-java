@@ -10,7 +10,7 @@ import java.util.concurrent.Semaphore;
  * @author Paul
  */
 public class Main {
-  static final String filename = "test_small.ppm";
+  static final String filename = "data/test_small.ppm";
 
   public static void main(String[] args) throws Exception{
     // read the image file and initialize a helper image of the same size
