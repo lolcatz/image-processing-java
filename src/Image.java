@@ -77,6 +77,8 @@ public class Image {
 
   public static Image Smoothen(Image helper, Image im, int row_start, int row_end) {
     int r_sum = 0, b_sum = 0, g_sum = 0, index;
+    final int col = 3;
+    final int row = im.width*3;
     // <editor-fold defaultstate="collapsed" desc="Special case: first row of image">
     if (row_start == 0) {
       row_start++;
@@ -321,57 +323,59 @@ public class Image {
       // </editor-fold>
       // <editor-fold defaultstate="collapsed" desc="columns 1 .. height-2">
       for (int x = 1; x < im.width-1; x++) {
+        index = helper.index(x, y);
+          
         r_sum = 0; g_sum = 0; b_sum = 0;
         // ___
         // __X
         // ___
-        r_sum += im.data[im.index(x+1,y)];
-        g_sum += im.data[im.index(x+1,y)+1];
-        b_sum += im.data[im.index(x+1,y)+2];
+        r_sum += im.data[index+col];
+        g_sum += im.data[index+col+1];
+        b_sum += im.data[index+col+2];
         // ___
         // X__
         // ___
-        r_sum += im.data[im.index(x-1,y)];
-        g_sum += im.data[im.index(x-1,y)+1];
-        b_sum += im.data[im.index(x-1,y)+2];
+        r_sum += im.data[index-col];
+        g_sum += im.data[index-col+1];
+        b_sum += im.data[index-col+2];
         // __X
         // ___
         // ___
-        r_sum += im.data[im.index(x+1,y-1)];
-        g_sum += im.data[im.index(x+1,y-1)+1];
-        b_sum += im.data[im.index(x+1,y-1)+2];
+        r_sum += im.data[index+col-row];
+        g_sum += im.data[index+col-row+1];
+        b_sum += im.data[index+col-row+2];
         // X__
         // ___
         // ___
-        r_sum += im.data[im.index(x-1,y-1)];
-        g_sum += im.data[im.index(x-1,y-1)+1];
-        b_sum += im.data[im.index(x-1,y-1)+2];
+        r_sum += im.data[index-col-row];
+        g_sum += im.data[index-col-row+1];
+        b_sum += im.data[index-col-row+2];
         // _X_
         // ___
         // ___
-        r_sum += im.data[im.index(x,y-1)];
-        g_sum += im.data[im.index(x,y-1)+1];
-        b_sum += im.data[im.index(x,y-1)+2];
+        r_sum += im.data[index-row];
+        g_sum += im.data[index-row+1];
+        b_sum += im.data[index-row+2];
         // ___
         // ___
         // __X
-        r_sum += im.data[im.index(x+1,y+1)];
-        g_sum += im.data[im.index(x+1,y+1)+1];
-        b_sum += im.data[im.index(x+1,y+1)+2];
+        r_sum += im.data[index+col+row];
+        g_sum += im.data[index+col+row+1];
+        b_sum += im.data[index+col+row+2];
         // ___
         // ___
         // X__
-        r_sum += im.data[im.index(x-1,y+1)];
-        g_sum += im.data[im.index(x-1,y+1)+1];
-        b_sum += im.data[im.index(x-1,y+1)+2];
+        r_sum += im.data[index-col+row];
+        g_sum += im.data[index-col+row+1];
+        b_sum += im.data[index-col+row+2];
         // ___
         // ___
         // _X_
-        r_sum += im.data[im.index(x,y+1)];
-        g_sum += im.data[im.index(x,y+1)+1];
-        b_sum += im.data[im.index(x,y+1)+2];
+        r_sum += im.data[index+row];
+        g_sum += im.data[index+row+1];
+        b_sum += im.data[index+row+2];
         
-        index = helper.index(x, y);
+        
         helper.data[index] = (byte)((im.data[index] + r_sum/8) / 2);
         helper.data[index+1] = (byte)((im.data[index+1] + g_sum/8) / 2);
         helper.data[index+2] = (byte)((im.data[index+2] + b_sum/8) / 2);
@@ -423,6 +427,8 @@ public class Image {
 
   public static Image Sharpen(Image helper, Image im, int row_start, int row_end) {
     int r_sum = 0, b_sum = 0, g_sum = 0, index;
+    final int col = 3;
+    final int row = im.width*3;
     
     // <editor-fold defaultstate="collapsed" desc="Special case: first row of image">
     if (row_start == 0) {
@@ -662,56 +668,57 @@ public class Image {
       // <editor-fold defaultstate="collapsed" desc="colums 1 .. width-2">
       for (int x = 1; x < im.width-1; x++) {
         r_sum = 0; g_sum = 0; b_sum = 0;
-        // ___
-        // __X
-        // ___
-        r_sum += im.data[im.index(x+1,y)];
-        g_sum += im.data[im.index(x+1,y)+1];
-        b_sum += im.data[im.index(x+1,y)+2];
-        // ___
-        // X__
-        // ___
-        r_sum += im.data[im.index(x-1,y)];
-        g_sum += im.data[im.index(x-1,y)+1];
-        b_sum += im.data[im.index(x-1,y)+2];
-        // __X
-        // ___
-        // ___
-        r_sum += im.data[im.index(x+1,y-1)];
-        g_sum += im.data[im.index(x+1,y-1)+1];
-        b_sum += im.data[im.index(x+1,y-1)+2];
-        // X__
-        // ___
-        // ___
-        r_sum += im.data[im.index(x-1,y-1)];
-        g_sum += im.data[im.index(x-1,y-1)+1];
-        b_sum += im.data[im.index(x-1,y-1)+2];
-        // _X_
-        // ___
-        // ___
-        r_sum += im.data[im.index(x,y-1)];
-        g_sum += im.data[im.index(x,y-1)+1];
-        b_sum += im.data[im.index(x,y-1)+2];
-        // ___
-        // ___
-        // __X
-        r_sum += im.data[im.index(x+1,y+1)];
-        g_sum += im.data[im.index(x+1,y+1)+1];
-        b_sum += im.data[im.index(x+1,y+1)+2];
-        // ___
-        // ___
-        // X__
-        r_sum += im.data[im.index(x-1,y+1)];
-        g_sum += im.data[im.index(x-1,y+1)+1];
-        b_sum += im.data[im.index(x-1,y+1)+2];
-        // ___
-        // ___
-        // _X_
-        r_sum += im.data[im.index(x,y+1)];
-        g_sum += im.data[im.index(x,y+1)+1];
-        b_sum += im.data[im.index(x,y+1)+2];
-
         index = helper.index(x, y);
+        
+        // ___
+        // __X
+        // ___
+        r_sum += im.data[index+col];
+        g_sum += im.data[index+col+1];
+        b_sum += im.data[index+col+2];
+        // ___
+        // X__
+        // ___
+        r_sum += im.data[index-col];
+        g_sum += im.data[index-col+1];
+        b_sum += im.data[index-col+2];
+        // __X
+        // ___
+        // ___
+        r_sum += im.data[index+col-row];
+        g_sum += im.data[index+col-row+1];
+        b_sum += im.data[index+col-row+2];
+        // X__
+        // ___
+        // ___
+        r_sum += im.data[index-col-row];
+        g_sum += im.data[index-col-row+1];
+        b_sum += im.data[index-col-row+2];
+        // _X_
+        // ___
+        // ___
+        r_sum += im.data[index-row];
+        g_sum += im.data[index-row+1];
+        b_sum += im.data[index-row+2];
+        // ___
+        // ___
+        // __X
+        r_sum += im.data[index+col+row];
+        g_sum += im.data[index+col+row+1];
+        b_sum += im.data[index+col+row+2];
+        // ___
+        // ___
+        // X__
+        r_sum += im.data[index-col+row];
+        g_sum += im.data[index-col+row+1];
+        b_sum += im.data[index-col+row+2];
+        // ___
+        // ___
+        // _X_
+        r_sum += im.data[index+row];
+        g_sum += im.data[index+row+1];
+        b_sum += im.data[index+row+2];
+
         helper.data[index] = byteClamp(2*(int)im.data[index] - r_sum/8);
         helper.data[index+1] = byteClamp(2*(int)im.data[index+1] - g_sum/8);
         helper.data[index+2] = byteClamp(2*(int)im.data[index+2] - b_sum/8);

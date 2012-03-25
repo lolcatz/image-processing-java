@@ -10,9 +10,9 @@ import java.util.concurrent.Semaphore;
  * @author Paul
  */
 public class Main {
-  static final String filename = "data/test_small.ppm";
+  static final String filename = "data/test_large.ppm";
 
-  public static void main(String[] args) throws Exception{
+  public static void main(String[] args) throws Exception{      
     // read the image file and initialize a helper image of the same size
     long t_start = System.nanoTime();
     Image im = new Image(filename);
@@ -59,7 +59,7 @@ public class Main {
 
     // save processed image
     t_start = System.nanoTime();
-    im.Save("processed.ppm");
+    im.Save("data/processed.ppm");
     t_end = System.nanoTime();
 
     System.out.println("Image saved in: "+(t_end - t_start)/1000000 + " ms");
