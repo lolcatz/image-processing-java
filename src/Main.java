@@ -80,16 +80,18 @@ public class Main {
     long t_end = System.nanoTime();
     System.out.println("Time: "+(t_end - t_start)/1000000 + " ms");
 
-    // save processed image
-    t_start = System.nanoTime();
-    try {
-      this.image.Save(outfile);
-    } catch (Exception ex) {
-      Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    t_end = System.nanoTime();
+    if (outfile != null) {
+      // save processed image
+      t_start = System.nanoTime();
+      try {
+        this.image.Save(outfile);
+      } catch (Exception ex) {
+        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+      }
+      t_end = System.nanoTime();
 
-    System.out.println("Image saved in: "+(t_end - t_start)/1000000 + " ms");
+      System.out.println("Image saved in: "+(t_end - t_start)/1000000 + " ms");
+    }
   }
 
   private Image readImage() {
