@@ -1,4 +1,4 @@
 #!/bin/bash
 
-ant
+ant clean jar
 
