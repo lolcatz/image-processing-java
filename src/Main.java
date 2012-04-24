@@ -27,14 +27,14 @@ public class Main {
 
   private static String getInfile() {
     String infile = System.getProperty("infile");
-    if(test)
+    if(!test)
       System.out.println("infile: " + infile);
     return infile;
   }
 
   private static String getOutfile() {
     String outfile = System.getProperty("outfile");
-    if(test)
+    if(!test)
       System.out.println("outfile: " + outfile);
     return outfile;
   }
@@ -49,7 +49,7 @@ public class Main {
     }
     if (threads < 0)
       threads = Runtime.getRuntime().availableProcessors();
-    if(test)
+    if(!test)
       System.out.println("threads: " + threads);
     return threads;
   }
@@ -62,7 +62,7 @@ public class Main {
       System.out.println("phases needs to be a number");
       System.exit(0);
     }
-    if(test)
+    if(!test)
       System.out.println("phases: " + phases);
     return phases;
   }
