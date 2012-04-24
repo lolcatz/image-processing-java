@@ -34,12 +34,13 @@ public class Main {
 
     // initialize semaphores for synchronization
     Semaphore stop = new Semaphore(0);
+    Semaphore finished = new Semaphore(0);
     Semaphore[] gates = new Semaphore[threads];
     for(int i = 0; i < threads; i++)
       gates[i] = new Semaphore(1);
 
     // create barrier thread for sync
-    Barrier b = new Barrier(stop, gates, threads, phases, this.helperImage, this.image);
+    Barrier b = new Barrier(finished, stop, gates, threads, phases, this.helperImage, this.image);
     Thread barrierThread = new Thread(b);
 
     // initialize worker threads for smoothen, assign each a slice of the image
@@ -55,8 +56,8 @@ public class Main {
       ts[i].start();
     barrierThread.start();
 
-    // wait while work still ongoing
-    while (!b.finished) {Thread.sleep(10);}
+    // wait while work still ongoing   
+    try { finished.acquire(); } catch (Exception e) {}
 
     // end timing, output time
     long t_end = System.nanoTime();

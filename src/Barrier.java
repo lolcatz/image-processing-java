@@ -13,13 +13,13 @@ import java.util.concurrent.Semaphore;
 public class Barrier implements Runnable {
   Semaphore stop;
   Semaphore[] gates;
+  Semaphore finished;
   int threads;
   int phases;
   Image helper;
   Image im;
 
-  boolean finished = false;
-  public Barrier(Semaphore stop, Semaphore[] gates, int threads, int phases,
+  public Barrier(Semaphore finished, Semaphore stop, Semaphore[] gates, int threads, int phases,
             Image im, Image helper) {
     this.stop = stop;
     this.gates = gates;
@@ -27,6 +27,7 @@ public class Barrier implements Runnable {
     this.phases = phases;
     this.im = im;
     this.helper = helper;
+    this.finished = finished;
   }
 
   public void run() {
@@ -38,6 +39,6 @@ public class Barrier implements Runnable {
         for (int i = 0; i < threads; i++)
           gates[i].release();
     }
-    finished = true;
+    finished.release();
   }
 }
