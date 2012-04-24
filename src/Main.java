@@ -1,7 +1,8 @@
 public class Main {
-
+   private static boolean test;
 
   public static void main(String[] args) throws Exception {
+    test = getTest();
     if (!getTest()) {
       ProcessImage main = new ProcessImage(getInfile(), getOutfile(), getThreads(), getPhases());
       main.processImage();
@@ -16,6 +17,7 @@ public class Main {
           data[k][j] = main.getTime();
         }
       }
+      outputJson(processData(data));
     }
   }
 
@@ -25,13 +27,15 @@ public class Main {
 
   private static String getInfile() {
     String infile = System.getProperty("infile");
-    System.out.println("infile: " + infile);
+    if(test)
+      System.out.println("infile: " + infile);
     return infile;
   }
 
   private static String getOutfile() {
     String outfile = System.getProperty("outfile");
-    System.out.println("outfile: " + outfile);
+    if(test)
+      System.out.println("outfile: " + outfile);
     return outfile;
   }
 
@@ -45,7 +49,8 @@ public class Main {
     }
     if (threads < 0)
       threads = Runtime.getRuntime().availableProcessors();
-    System.out.println("threads: " + threads);
+    if(test)
+      System.out.println("threads: " + threads);
     return threads;
   }
 
@@ -57,7 +62,8 @@ public class Main {
       System.out.println("phases needs to be a number");
       System.exit(0);
     }
-    System.out.println("phases: " + phases);
+    if(test)
+      System.out.println("phases: " + phases);
     return phases;
   }
 
