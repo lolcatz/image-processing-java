@@ -6,11 +6,21 @@ public class ProcessImage {
   private String outfile;
   private int threads;
   private int phases;
+  private long time;
+  private boolean print = true;
 
   private Image helperImage;
   private Image image;
 
   public ProcessImage(String infile, String outfile, int threads, int phases) throws Exception {
+    this.infile = infile;
+    this.outfile = outfile;
+    this.threads = threads;
+    this.phases = phases;
+  }
+
+  public ProcessImage(String infile, String outfile, int threads, int phases, boolean print) throws Exception {
+    this.print = false;
     this.infile = infile;
     this.outfile = outfile;
     this.threads = threads;
@@ -27,7 +37,8 @@ public class ProcessImage {
             this.image.height, this.image.maxval);
 
     long t_start = System.nanoTime();
-    System.out.println("Processing with " + threads + " threads..");
+    if (print)
+      System.out.println("Processing with " + threads + " threads..");
 
     // initialize semaphores for synchronization
     Semaphore stop = new Semaphore(0);
@@ -61,7 +72,9 @@ public class ProcessImage {
 
     // end timing, output time
     long t_end = System.nanoTime();
-    System.out.println("Time: " + (t_end - t_start) / 1000000 + " ms");
+    time = (t_end - t_start) / 1000000;
+    if (print)
+      System.out.println("Time: " + time + " ms");
 
   }
 
@@ -76,17 +89,19 @@ public class ProcessImage {
       System.exit(0);
     }
     long t_end = System.nanoTime();
-    System.out.println("Image loaded in " + (t_end - t_start) / 1000000 + " ms");
+    if (print)
+      System.out.println("Image loaded in " + (t_end - t_start) / 1000000 + " ms");
     return img;
   }
 
   public void saveImage() {
     if (outfile == null) {
-      System.out.println("output file not specified, not saving.");
+      if (print)
+        System.out.println("output file not specified, not saving.");
       return;
     }
-
-    System.out.println("Saving output to " + this.outfile);
+    if (print)
+      System.out.println("Saving output to " + this.outfile);
 
     long t_start = System.nanoTime();
     try {
@@ -96,7 +111,11 @@ public class ProcessImage {
       System.out.println(ex);
     }
     long t_end = System.nanoTime();
+    if (print)
+      System.out.println("Image saved in " + (t_end - t_start) / 1000000 + " ms");
+  }
 
-    System.out.println("Image saved in " + (t_end - t_start) / 1000000 + " ms");
+  public long getTime() {
+    return time;
   }
 }

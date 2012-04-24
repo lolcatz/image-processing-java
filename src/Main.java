@@ -8,9 +8,13 @@ public class Main {
       main.saveImage();
     } else {
       int i = Runtime.getRuntime().availableProcessors();
-      for (int k=1; k <= i; k++ ) {
-        ProcessImage main = new ProcessImage(getInfile(), getOutfile(), k, getPhases());
-        main.processImage();
+      long[][] data = new long[i][10];
+      for (int k=0; k < i; k++ ) {
+        for (int j=0; j< 10; j++) {
+          ProcessImage main = new ProcessImage(getInfile(), null, (k+1), getPhases(), false);
+          main.processImage();
+          data[k][j] = main.getTime();
+        }
       }
     }
   }
@@ -55,5 +59,26 @@ public class Main {
     }
     System.out.println("phases: " + phases);
     return phases;
+  }
+
+  private static long[] processData(long[][] data) {
+    long[] paldata = new long[data.length];
+    for (int i=0; i<data.length;i++) {
+      for (int j=0; j<data[0].length; j++) {
+        paldata[i] += data[i][j];
+      }
+      paldata[i] /= data[0].length;
+    }
+    return paldata;
+  }
+
+  private static void outputJson(long[] data) {
+    System.out.print("[");
+    for (int i=0; i<data.length;i++) {
+      System.out.print("["+i+","+data[i]+"]");
+      if (i+1 != data.length)
+        System.out.print(",");
+    }
+    System.out.print("]");
   }
 }
