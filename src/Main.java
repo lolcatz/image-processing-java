@@ -116,7 +116,7 @@ public class Main {
     }
     long t_end = System.nanoTime();
 
-    System.out.println("Image saved in: "+(t_end - t_start)/1000000 + " ms");
+    System.out.println("Image saved in "+(t_end - t_start)/1000000 + " ms");
   }
 
 }
