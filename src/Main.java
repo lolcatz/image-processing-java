@@ -21,7 +21,7 @@ public class Main {
   }
 
   private void verifyResult() {
-    
+
   }
 
   private void processImage() throws Exception {
@@ -56,7 +56,7 @@ public class Main {
       ts[i].start();
     barrierThread.start();
 
-    // wait while work still ongoing   
+    // wait while work still ongoing
     try { finished.acquire(); } catch (Exception e) {}
 
     // end timing, output time
@@ -86,6 +86,8 @@ public class Main {
       System.out.println("threads needs to be a number");
       System.exit(0);
     }
+    if (this.threads < 0)
+      this.threads = Runtime.getRuntime().availableProcessors();
     System.out.println("threads: " + this.threads);
   }
 
