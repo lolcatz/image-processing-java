@@ -152,7 +152,7 @@ public class Image {
    
       // </editor-fold>
 
-      // <editor-fold defaultstate="collapsed" desc="columns 1 .. height-2">
+      // <editor-fold defaultstate="collapsed" desc="columns 1 .. width-2">
       for (int x = 1; x < im.width-1; x++) {
         r_sum = 0; b_sum = 0; g_sum = 0;
         // ___
@@ -193,7 +193,7 @@ public class Image {
       }
       // </editor-fold>
 
-      // <editor-fold defaultstate="collapsed" desc="column height-1">
+      // <editor-fold defaultstate="collapsed" desc="column width-1">
       r_sum = 0; b_sum = 0; g_sum = 0;
       // ___
       // X__
@@ -316,7 +316,7 @@ public class Image {
       g_sum += im.data[im.index(im.width-1,im.height-2)+1];
       b_sum += im.data[im.index(im.width-1,im.height-2)+2];
 
-      index = helper.index(im.width-1, 0);
+      index = helper.index(im.width-1, im.height-1);
       helper.data[index] = (byte)((im.data[index] + r_sum/3) / 2);
       helper.data[index+1] = (byte)((im.data[index+1] + g_sum/3) / 2);
       helper.data[index+2] = (byte)((im.data[index+2] + b_sum/3) / 2);
