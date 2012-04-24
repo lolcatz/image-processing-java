@@ -20,6 +20,10 @@ public class Main {
     setProperties();
   }
 
+  private void verifyResult() {
+    
+  }
+
   private void processImage() throws Exception {
     this.image = readImage();
     this.helperImage = new Image(this.image.width,

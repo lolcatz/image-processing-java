@@ -30,13 +30,13 @@ public class Barrier implements Runnable {
   }
 
   public void run() {
-    for (int j = 0; j < phases * 2; j++) {
+    for (int j = 0; j < phases*2; j++) {
       // wait for all of the threads to stop
       for (int i = 0; i < threads; i++)
         try { stop.acquire(); } catch (Exception e) {}
         // release all worker threads
         for (int i = 0; i < threads; i++)
-        gates[i].release();
+          gates[i].release();
     }
     finished = true;
   }

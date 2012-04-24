@@ -4,6 +4,7 @@
  */
 
 import java.io.*;
+import java.util.Arrays;
 
 /**
  *
@@ -31,12 +32,41 @@ public class Image {
 
     int read = 0;
     while(read < data.length) {
-      String[] values = br.readLine().split(" ");
+      String[] values = br.readLine().trim().split("\\s+");
       for (String b : values)
         data[read++] = (byte)(Integer.parseInt(b) - 128);
     }
     br.close();
     fr.close();
+  }
+
+  @Override
+  public boolean equals(Object object) {
+    if (object == null) return false;
+    if (object == this) return true;
+    if (!(object instanceof Image)) return false;
+    Image other = (Image) object;
+
+    if (this.maxval != other.maxval
+            || this.height != other.height
+            || this.width != other.width)
+      return false;
+
+    for (int i = 0; i < this.data.length; ++i)
+      if (this.data[i] != other.data[i])
+        return false;
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int hash = 5;
+    hash = 37 * hash + Arrays.hashCode(this.data);
+    hash = 37 * hash + this.maxval;
+    hash = 37 * hash + this.width;
+    hash = 37 * hash + this.height;
+    return hash;
   }
 
   private int index(int pixel_x, int pixel_y) {
@@ -55,6 +85,19 @@ public class Image {
     s += "Height: " + height + "\n";
     s += "Maxval: " + maxval + "\n";
     return s;
+  }
+
+  public void printImage() {
+    for (int r = 0; r < this.height; ++r) {
+      for (int c = 0; c < this.width; ++c) {
+        int i = this.index(c, r);
+        System.out.print((128+this.data[i]) + " ");
+        System.out.print((128+this.data[i+1]) + " ");
+        System.out.print((128+this.data[i+2]) + " ");
+      }
+      System.out.println();
+    }
+
   }
 
   public void Save(String filename) throws Exception {
@@ -182,6 +225,7 @@ public class Image {
     // <editor-fold defaultstate="collapsed" desc="Special case: last row of image">
     if (row_end == im.height) {
       row_end--;
+      r_sum = 0; b_sum = 0; g_sum = 0;
       // <editor-fold defaultstate="collapsed" desc="column 0">
       // ___
       // __X
@@ -388,7 +432,7 @@ public class Image {
       // ___
       r_sum += im.data[im.index(im.width-1,y-1)];
       g_sum += im.data[im.index(im.width-1,y-1)+1];
-      b_sum += im.data[im.index(0,y-1)+2];
+      b_sum += im.data[im.index(im.width-1,y-1)+2];
       // X__
       // ___
       // ___
@@ -429,7 +473,7 @@ public class Image {
     int r_sum = 0, b_sum = 0, g_sum = 0, index;
     final int col = 3;
     final int row = im.width*3;
-    
+
     // <editor-fold defaultstate="collapsed" desc="Special case: first row of image">
     if (row_start == 0) {
       row_start++;
@@ -530,6 +574,7 @@ public class Image {
     // <editor-fold defaultstate="collapsed" desc="Special case: last row of image">
     if (row_end == im.height) {
       row_end--;
+      r_sum = 0; b_sum = 0; g_sum = 0;
       // <editor-fold defaultstate="collapsed" desc="column 0">
       // ___
       // __X
@@ -616,7 +661,7 @@ public class Image {
       g_sum += im.data[im.index(im.width-1,im.height-2)+1];
       b_sum += im.data[im.index(im.width-1,im.height-2)+2];
 
-      index = helper.index(im.width-1, 0);
+      index = helper.index(im.width-1, im.height-1);
       helper.data[index] = byteClamp(2*(int)im.data[index] - r_sum/3);
       helper.data[index+1] = byteClamp(2*(int)im.data[index+1] - g_sum/3);
       helper.data[index+2] = byteClamp(2*(int)im.data[index+2] - b_sum/3);
@@ -732,7 +777,7 @@ public class Image {
       // ___
       r_sum += im.data[im.index(im.width-1,y-1)];
       g_sum += im.data[im.index(im.width-1,y-1)+1];
-      b_sum += im.data[im.index(0,y-1)+2];
+      b_sum += im.data[im.index(im.width-1,y-1)+2];
       // X__
       // ___
       // ___
@@ -770,6 +815,6 @@ public class Image {
   }
 
   static byte byteClamp(int i) {
-    return i < -128 ? -128 : i > 127 ? 127 : (byte)i;
+    return (i < -128 ? -128 : (i > 127 ? 127 : (byte)i));
   }
 }
