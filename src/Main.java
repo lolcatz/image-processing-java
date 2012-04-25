@@ -81,7 +81,7 @@ public class Main {
   private static void outputJson(long[] data) {
     System.out.print("[");
     for (int i=0; i<data.length;i++) {
-      System.out.print("["+i+","+data[i]+"]");
+      System.out.print("["+(i+1)+","+data[i]+"]");
       if (i+1 != data.length)
         System.out.print(",");
     }
