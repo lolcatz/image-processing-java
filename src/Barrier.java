@@ -5,23 +5,24 @@ public class Barrier implements Runnable {
   Semaphore[] gates;
   Semaphore finished;
   int threads;
-  int phases;
+
+  Operation[] operations;
   Image helper;
   Image im;
 
-  public Barrier(Semaphore finished, Semaphore stop, Semaphore[] gates, int threads, int phases,
-            Image im, Image helper) {
+  public Barrier(Semaphore finished, Semaphore stop, Semaphore[] gates, int threads, Operation[] operations, Image im, Image helper) {
     this.stop = stop;
     this.gates = gates;
     this.threads = threads;
-    this.phases = phases;
+    this.operations = operations;
     this.im = im;
     this.helper = helper;
     this.finished = finished;
   }
 
   public void run() {
-    for (int j = 0; j < phases*2; j++) {
+    for (Operation op : this.operations) {
+      System.out.println(op);
       // wait for all of the threads to stop
       for (int i = 0; i < threads; i++)
         try { stop.acquire(); } catch (Exception e) {}

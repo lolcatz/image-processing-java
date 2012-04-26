@@ -3,18 +3,18 @@ import java.util.concurrent.Semaphore;
 public class ImageWorker implements Runnable {
   Semaphore stop;
   Semaphore gate;
-  int phases;
+  Operation[] operations;
 
   Image im;
   Image helper;
   int row_start;
   int row_end;
 
-  public ImageWorker(Semaphore stop, Semaphore gate, int phases,
+  public ImageWorker(Semaphore stop, Semaphore gate, Operation[] operations,
       Image im, Image helper, int row_start, int row_end) {
     this.stop = stop;
     this.gate = gate;
-    this.phases = phases;
+    this.operations = operations;
     this.im = im;
     this.helper = helper;
     this.row_start = row_start;
@@ -23,13 +23,13 @@ public class ImageWorker implements Runnable {
 
   public void run() {
     // first smoothen
-    for (int j = 0; j < phases*2; j++) {
+    for (Operation op : this.operations) {
       // wait for gate
       try { gate.acquire(); } catch (Exception e) {}
       // process a slice of the image
-      if (j < phases)
+      if (op == Operation.Smoothen)
         helper = Image.Smoothen(helper, im, row_start, row_end);
-      else
+      else if (op == Operation.Sharpen)
         helper = Image.Sharpen(helper, im, row_start, row_end);
       // swap references for next round
       Image temp = helper;

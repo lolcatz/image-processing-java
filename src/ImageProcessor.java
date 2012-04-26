@@ -2,15 +2,15 @@ import java.util.concurrent.Semaphore;
 
 public class ImageProcessor {
   private int threads;
-  private int phases;
+  private Operation[] operations;
 
   private Image helperImage;
   private Image image;
 
-  public ImageProcessor(Image image, int threads, int phases) throws Exception {
+  public ImageProcessor(Image image, int threads, Operation[] operations) throws Exception {
     this.image = image;
     this.threads = threads;
-    this.phases = phases;
+    this.operations = operations;
   }
 
   public long process() throws Exception {
@@ -18,7 +18,6 @@ public class ImageProcessor {
             this.image.height, this.image.maxval);
 
     long t_start = System.nanoTime();
-    System.out.println("Threads: " + threads);
 
     // initialize semaphores for synchronization
     Semaphore stop = new Semaphore(0);
@@ -28,13 +27,13 @@ public class ImageProcessor {
       gates[i] = new Semaphore(1);
 
     // create barrier thread for sync
-    Barrier b = new Barrier(finished, stop, gates, threads, phases, this.helperImage, this.image);
+    Barrier b = new Barrier(finished, stop, gates, threads, this.operations, this.helperImage, this.image);
     Thread barrierThread = new Thread(b);
 
     // initialize worker threads for smoothen, assign each a slice of the image
     Thread[] ts = new Thread[threads];
     for (int i = 0; i < threads; i++)
-      ts[i] = new Thread(new ImageWorker(stop, gates[i], phases,
+      ts[i] = new Thread(new ImageWorker(stop, gates[i], this.operations,
               this.image, this.helperImage,
               (i * this.image.height) / threads,
               (i + 1) * this.image.height / threads));
