@@ -1,14 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 import java.util.concurrent.Semaphore;
 
-/**
- *
- * @author Paul
- */
 public class ImageWorker implements Runnable {
   Semaphore stop;
   Semaphore gate;

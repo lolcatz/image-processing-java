@@ -1,6 +1,5 @@
 import java.util.concurrent.Semaphore;
 
-
 public class ImageProcessor {
   private int threads;
   private int phases;

@@ -21,9 +21,11 @@ public class Main {
 
     for (int k = 0; k < threads; k++ )
     {
+      System.out.println("Benchmarking with " + (k+1) + " threads");
       for (int j = 0; j < times; j++)
       {
-        ImageProcessor imageProcessor = new ImageProcessor(img, (k+1), getPhases());
+        System.out.println("Run " + (k*times + j+1)+ "/" + (threads*times));
+        ImageProcessor imageProcessor = new ImageProcessor(img, k, getPhases());
         totalTime += data[k][j] = imageProcessor.process();
       }
     }
@@ -36,7 +38,21 @@ public class Main {
     ImageProcessor imageProcessor =
             new ImageProcessor(img, getThreads(), getPhases());
     imageProcessor.process();
-    img.Save(getOutfile());
+    saveImage(img, getOutfile());
+  }
+
+  public static void saveImage(Image img, String filename) {
+    System.out.println("Saving image to " + filename);
+
+    long t_start = System.nanoTime();
+    try {
+      img.Save(filename);
+    } catch (Exception ex) {
+      System.out.println("Saving image failed.");
+      System.out.println(ex);
+    }
+    long t_end = System.nanoTime();
+    System.out.println("Image saved in " + (t_end - t_start) / 1000000 + " ms");
   }
 
   private static Image readImage(String filename) {
@@ -60,13 +76,13 @@ public class Main {
 
   private static String getInfile() {
     String infile = System.getProperty("infile");
-    System.out.println("infile: " + infile);
+    System.out.println("Input file: " + infile);
     return infile;
   }
 
   private static String getOutfile() {
     String outfile = System.getProperty("outfile");
-    System.out.println("outfile: " + outfile);
+    System.out.println("Output file: " + outfile);
     return outfile;
   }
 

@@ -1,14 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 import java.util.concurrent.Semaphore;
-
-/**
- *
- * @author Paul
- */
 
 public class Barrier implements Runnable {
   Semaphore stop;
