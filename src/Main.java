@@ -138,7 +138,7 @@ public class Main {
     File f = new File(getBenchmarkFile());
     FileWriter fw = new FileWriter(f);
     BufferedWriter bw = new BufferedWriter(fw);
-    
+
     bw.write("[");
     for (int i=0; i < results.length; i++) {
       bw.write("["+(i+1)+","+results[i]+"]");

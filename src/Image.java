@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.Arrays;
 
 public class Image {
-  byte[] data;
+  public byte[] data;
   public int maxval;
   public int width;
   public int height;
@@ -14,7 +14,7 @@ public class Image {
     if(!br.readLine().equals("P3"))
       throw new Exception("Unsupported format");
     String[] dims = br.readLine().split(" ");
-        
+
     width = Integer.parseInt(dims[0]);
     height = Integer.parseInt(dims[1]);
     maxval = Integer.parseInt(br.readLine());
@@ -99,7 +99,7 @@ public class Image {
     bw.append("P3\n");
     bw.append(width + " " +height +"\n");
     bw.append(maxval+"\n");
-    
+
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width*3; x++)
         bw.write((data[y*width*3+x]+128)+" ");
@@ -140,7 +140,7 @@ public class Image {
       helper.data[index] = (byte)((im.data[index] + r_sum/3) / 2);
       helper.data[index+1] = (byte)((im.data[index+1] + g_sum/3) / 2);
       helper.data[index+2] = (byte)((im.data[index+2] + b_sum/3) / 2);
-   
+
       // </editor-fold>
 
       // <editor-fold defaultstate="collapsed" desc="columns 1 .. width-2">
@@ -359,7 +359,7 @@ public class Image {
       // <editor-fold defaultstate="collapsed" desc="columns 1 .. height-2">
       for (int x = 1; x < im.width-1; x++) {
         index = helper.index(x, y);
-          
+
         r_sum = 0; g_sum = 0; b_sum = 0;
         // ___
         // __X
@@ -409,8 +409,7 @@ public class Image {
         r_sum += im.data[index+row];
         g_sum += im.data[index+row+1];
         b_sum += im.data[index+row+2];
-        
-        
+
         helper.data[index] = (byte)((im.data[index] + r_sum/8) / 2);
         helper.data[index+1] = (byte)((im.data[index+1] + g_sum/8) / 2);
         helper.data[index+2] = (byte)((im.data[index+2] + b_sum/8) / 2);
@@ -526,7 +525,7 @@ public class Image {
         r_sum += im.data[im.index(x,1)];
         g_sum += im.data[im.index(x,1)+1];
         b_sum += im.data[im.index(x,1)+2];
-        
+
         index = helper.index(x, 0);
         helper.data[index] = byteClamp(2*(int)im.data[index] - r_sum/5);
         helper.data[index+1] = byteClamp(2*(int)im.data[index+1] - g_sum/5);
@@ -659,7 +658,7 @@ public class Image {
     }
     // </editor-fold>
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="Normal case: rows 1 .. height-2">
     for (int y = row_start; y < row_end; y++) {
       // <editor-fold defaultstate="collapsed" desc="column 0">
@@ -700,12 +699,12 @@ public class Image {
       helper.data[index+1] = byteClamp(2*(int)im.data[index+1] - g_sum/5);
       helper.data[index+2] = byteClamp(2*(int)im.data[index+2] - b_sum/5);
       // </editor-fold>
-      
+
       // <editor-fold defaultstate="collapsed" desc="colums 1 .. width-2">
       for (int x = 1; x < im.width-1; x++) {
         r_sum = 0; g_sum = 0; b_sum = 0;
         index = helper.index(x, y);
-        
+
         // ___
         // __X
         // ___
@@ -760,7 +759,7 @@ public class Image {
         helper.data[index+2] = byteClamp(2*(int)im.data[index+2] - b_sum/8);
       }
       // </editor-fold>
-      
+
       // <editor-fold defaultstate="collapsed" desc="column width-1">
       r_sum = 0; b_sum = 0; g_sum = 0;
       // _X_
@@ -799,9 +798,9 @@ public class Image {
       helper.data[index+1] = byteClamp(2*(int)im.data[index+1] - g_sum/5);
       helper.data[index+2] = byteClamp(2*(int)im.data[index+2] - b_sum/5);
       // </editor-fold>
-    }   
+    }
     // </editor-fold>
-    
+
     return helper;
   }
 
