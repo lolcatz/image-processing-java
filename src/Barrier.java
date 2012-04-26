@@ -26,9 +26,9 @@ public class Barrier implements Runnable {
       // wait for all of the threads to stop
       for (int i = 0; i < threads; i++)
         try { stop.acquire(); } catch (Exception e) {}
-        // release all worker threads
-        for (int i = 0; i < threads; i++)
-          gates[i].release();
+      // release all worker threads
+      for (int i = 0; i < threads; i++)
+        gates[i].release();
     }
     finished.release();
   }
