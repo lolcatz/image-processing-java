@@ -26,7 +26,7 @@ public class Main {
       for (int j = 0; j < times; j++)
       {
         System.out.println("Run " + (k*times + j+1)+ "/" + (threads*times));
-        ImageProcessor imageProcessor = new ImageProcessor(img, k, getOperations());
+        ImageProcessor imageProcessor = new ImageProcessor(img, k+1, getOperations());
         totalTime += data[k][j] = imageProcessor.process();
       }
     }
