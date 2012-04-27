@@ -16,8 +16,8 @@ public class Main {
   }
 
   private static void runBenchmark() throws Exception {
-    int times = 10;
-    int threads = Runtime.getRuntime().availableProcessors() * getThreadMultiplier();
+    int times = getTestTimes();
+    int threads = getThreads();
     long[][] data = new long[threads][times];
     long totalTime = 0;
     Image img = readImage(getInfile());
@@ -34,16 +34,6 @@ public class Main {
     }
     System.out.println("Benchmark took " + totalTime + " ms");
     writeBenchmarkResults(average(data));
-  }
-
-  private static int getThreadMultiplier() {
-    int threadMultiplier = 1;
-    try {
-       threadMultiplier = Integer.parseInt(System.getProperty("thread_multiplier"));
-    } catch (NumberFormatException e) {
-      System.out.println("Invalid thread_multiplier specified, defaulting to " + threadMultiplier);
-    }
-    return threadMultiplier;
   }
 
   private static void processImage() throws Exception {
@@ -97,6 +87,17 @@ public class Main {
     String outfile = System.getProperty("outfile");
     System.out.println("Output file: " + outfile);
     return outfile;
+  }
+
+  private static int getTestTimes() {
+    int times = 10;
+    try {
+      times = Integer.parseInt(System.getProperty("testTimes"));
+    } catch (NumberFormatException e) {
+      System.out.println("testTimes not specified, defaulting to " + times);
+    }
+    return times;
+
   }
 
   private static int getThreads() {
