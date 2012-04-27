@@ -1,28 +1,23 @@
 import java.util.concurrent.Semaphore;
 
 public class Barrier implements Runnable {
-  Semaphore stop;
-  Semaphore[] gates;
-  Semaphore finished;
-  int threads;
+  private Semaphore stop;
+  private Semaphore[] gates;
+  private Semaphore finished;
 
-  Operation[] operations;
-  Image helper;
-  Image im;
+  private int operations;
+  private int threads;
 
-  public Barrier(Semaphore finished, Semaphore stop, Semaphore[] gates, int threads, Operation[] operations, Image im, Image helper) {
+  public Barrier(Semaphore finished, Semaphore stop, Semaphore[] gates, int threads, int operations) {
     this.stop = stop;
     this.gates = gates;
     this.threads = threads;
     this.operations = operations;
-    this.im = im;
-    this.helper = helper;
     this.finished = finished;
   }
 
   public void run() {
-    for (Operation op : this.operations) {
-      System.out.println(op);
+    for (int o = 0; o < this.operations; ++o) {
       // wait for all of the threads to stop
       for (int i = 0; i < threads; i++)
         try { stop.acquire(); } catch (Exception e) {}

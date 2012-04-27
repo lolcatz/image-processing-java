@@ -3,10 +3,12 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Main {
 
   public static void main(String[] args) throws Exception {
+    System.out.println("Doing operations: " + Arrays.toString(getOperations()));
     if (getBenchmarkFile() == null)
       processImage();
     else
@@ -15,7 +17,7 @@ public class Main {
 
   private static void runBenchmark() throws Exception {
     int times = 10;
-    int threads = Runtime.getRuntime().availableProcessors();
+    int threads = Runtime.getRuntime().availableProcessors() * getThreadMultiplier();
     long[][] data = new long[threads][times];
     long totalTime = 0;
     Image img = readImage(getInfile());
@@ -34,6 +36,16 @@ public class Main {
     writeBenchmarkResults(average(data));
   }
 
+  private static int getThreadMultiplier() {
+    int threadMultiplier = 1;
+    try {
+       threadMultiplier = Integer.parseInt(System.getProperty("thread_multiplier"));
+    } catch (NumberFormatException e) {
+      System.out.println("Invalid thread_multiplier specified, defaulting to " + threadMultiplier);
+    }
+    return threadMultiplier;
+  }
+
   private static void processImage() throws Exception {
     Image img = readImage(getInfile());
     ImageProcessor imageProcessor =
@@ -47,7 +59,7 @@ public class Main {
 
     long t_start = System.nanoTime();
     try {
-      img.Save(filename);
+      img.save(filename);
     } catch (Exception ex) {
       System.out.println("Saving image failed.");
       System.out.println(ex);

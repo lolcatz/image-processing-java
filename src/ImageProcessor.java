@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.concurrent.Semaphore;
 
 public class ImageProcessor {
@@ -27,7 +28,7 @@ public class ImageProcessor {
       gates[i] = new Semaphore(1);
 
     // create barrier thread for sync
-    Barrier b = new Barrier(finished, stop, gates, threads, this.operations, this.helperImage, this.image);
+    Barrier b = new Barrier(finished, stop, gates, threads, this.operations.length);
     Thread barrierThread = new Thread(b);
 
     // initialize worker threads for smoothen, assign each a slice of the image
@@ -61,7 +62,7 @@ public class ImageProcessor {
 
     long t_start = System.nanoTime();
     try {
-      this.image.Save(filename);
+      this.image.save(filename);
     } catch (Exception ex) {
       System.out.println("Saving image failed.");
       System.out.println(ex);

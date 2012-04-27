@@ -8,6 +8,10 @@ public class Image {
   public int height;
 
   public Image(String filename) throws Exception {
+    readImage(filename);
+  }
+
+  private void readImage(String filename) throws Exception {
     FileReader fr = new FileReader(filename);
     BufferedReader br = new BufferedReader(fr);
 
@@ -15,14 +19,14 @@ public class Image {
       throw new Exception("Unsupported format");
     String[] dims = br.readLine().split(" ");
 
-    width = Integer.parseInt(dims[0]);
-    height = Integer.parseInt(dims[1]);
-    maxval = Integer.parseInt(br.readLine());
+    this.width = Integer.parseInt(dims[0]);
+    this.height = Integer.parseInt(dims[1]);
+    this.maxval = Integer.parseInt(br.readLine());
 
-    data = new byte[height*width*3];
+    this.data = new byte[height*width*3];
 
     int read = 0;
-    while(read < data.length) {
+    while(read < this.data.length) {
       String[] values = br.readLine().trim().split("\\s+");
       for (String b : values)
         data[read++] = (byte)(Integer.parseInt(b) - 128);
@@ -66,7 +70,7 @@ public class Image {
 
   public Image(int width, int height, int maxval) {
     this.width = width; this.height = height; this.maxval = maxval;
-    data = new byte[height*width*3];
+    this.data = new byte[height*width*3];
   }
 
   @Override
@@ -91,7 +95,7 @@ public class Image {
 
   }
 
-  public void Save(String filename) throws Exception {
+  public void save(String filename) throws Exception {
     File f = new File(filename);
     FileWriter fw = new FileWriter(f);
     BufferedWriter bw = new BufferedWriter(fw);
@@ -109,7 +113,7 @@ public class Image {
     fw.close();
   }
 
-  public static Image Smoothen(Image helper, Image im, int row_start, int row_end) {
+  public static Image smoothen(Image helper, Image im, int row_start, int row_end) {
     int r_sum = 0, b_sum = 0, g_sum = 0, index;
     final int col = 3;
     final int row = im.width*3;
@@ -459,7 +463,7 @@ public class Image {
     return helper;
   }
 
-  public static Image Sharpen(Image helper, Image im, int row_start, int row_end) {
+  public static Image sharpen(Image helper, Image im, int row_start, int row_end) {
     int r_sum = 0, b_sum = 0, g_sum = 0, index;
     final int col = 3;
     final int row = im.width*3;
