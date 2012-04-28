@@ -112,7 +112,10 @@ public class Image {
     bw.close();
     fw.close();
   }
-
+  /*
+   * For each pixel smoothen counts the average value of the surrounding pixels and sets it to the pixel.
+   * The value is then divided by two.
+   */
   public static Image smoothen(Image helper, Image im, int row_start, int row_end) {
     int r_sum = 0, b_sum = 0, g_sum = 0, index;
     final int col = 3;
@@ -463,6 +466,10 @@ public class Image {
     return helper;
   }
 
+  /*
+   * For each pixel sharpen counts the average value of the surrounding pixels, then adds the difference 
+   * between that value and the pixels own value into the pixel.
+   */
   public static Image sharpen(Image helper, Image im, int row_start, int row_end) {
     int r_sum = 0, b_sum = 0, g_sum = 0, index;
     final int col = 3;
