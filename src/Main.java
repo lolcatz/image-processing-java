@@ -51,7 +51,9 @@ public class Main {
     writeBenchmarkResults(average(data));
   }
 
-  
+  /*
+   * Calls for the ImageProcessor to process an image.
+   */
   private static void processImage() throws Exception {
     Image img = readImage(getInfile());
     ImageProcessor imageProcessor =
@@ -60,6 +62,9 @@ public class Main {
     saveImage(img, getOutfile());
   }
 
+  /*
+   * Saves the image to the outfile defined in the shellscripts.
+   */
   public static void saveImage(Image img, String filename) {
     System.out.println("Saving image to " + filename);
 
@@ -74,6 +79,9 @@ public class Main {
     System.out.println("Image saved in " + (t_end - t_start) / 1000000 + " ms");
   }
 
+  /*
+   * Reads an image from the infile defined in the shellscripts.
+   */
   private static Image readImage(String filename) {
     Image img = null;
     long t_start = System.nanoTime();
