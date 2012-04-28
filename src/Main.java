@@ -7,6 +7,11 @@ import java.util.Arrays;
 
 public class Main {
 
+  /*
+   * If a benchmark file exists, run benchmark tests.
+   * Otherwise run image processing. Benchmarking 
+   * works with start_benchmark shellscript.
+   */
   public static void main(String[] args) throws Exception {
     System.out.println("Doing operations: " + Arrays.toString(getOperations()));
     if (getBenchmarkFile() == null)
@@ -15,13 +20,20 @@ public class Main {
       runBenchmark();
   }
 
+  /*
+   * Method for counting benchmark times.
+   */
   private static void runBenchmark() throws Exception {
     int times = getTestTimes();
     int threads = getThreads();
     long[][] data = new long[threads][times];
     long totalTime = 0;
     Image img = readImage(getInfile());
-
+    
+    /*
+     * Counts the running time for 0 to k threads, where k is defined 
+     * in start_benchmark shellscript.
+     */
     for (int k = 0; k < threads; k++ )
     {
       System.out.println("Benchmarking with " + (k+1) + " threads");
@@ -33,9 +45,13 @@ public class Main {
       }
     }
     System.out.println("Benchmark took " + totalTime + " ms");
+    /*
+     * Writes the benchmark results to the benchmark file also defined in the shellscript.
+     */
     writeBenchmarkResults(average(data));
   }
 
+  
   private static void processImage() throws Exception {
     Image img = readImage(getInfile());
     ImageProcessor imageProcessor =
@@ -77,18 +93,26 @@ public class Main {
     return System.getProperty("benchmarkFile");
   }
 
+  /*
+   * Reads the image from the shellscript.
+   */
   private static String getInfile() {
     String infile = System.getProperty("infile");
     System.out.println("Input file: " + infile);
     return infile;
   }
 
+  /*
+   * Reads the desired output file from the shellcript.
+   */
   private static String getOutfile() {
     String outfile = System.getProperty("outfile");
     System.out.println("Output file: " + outfile);
     return outfile;
   }
-
+  /*
+   * Reads the amount of test times from the shellcript.
+   */
   private static int getTestTimes() {
     int times = 10;
     try {
@@ -99,7 +123,11 @@ public class Main {
     return times;
 
   }
-
+  /*
+   * Method for adjusting the amount of threads available. Read from the shellscript 
+   * unless the value is -1. For the negative values the amount available threads is asked from 
+   * Runtime.
+   */
   private static int getThreads() {
     int threads = 0;
     try {
@@ -113,7 +141,10 @@ public class Main {
     System.out.println("Threads: " + threads);
     return threads;
   }
-
+  /*
+   * Method for deciding which operations are run for the image. Operations are 
+   * smoothen, A, and sharpen, B. Defined in the shellscripts.
+   */
   private static Operation[] getOperations() {
     ArrayList<Operation> operations = new ArrayList<Operation>();
     String operationsString = System.getProperty("operations");
@@ -145,7 +176,11 @@ public class Main {
     }
     return average;
   }
-
+  
+  /*
+   * Method for writing the benchmark results for the benchmark tests. The 
+   * output file is defined in the shellscripts benchmarkFile.
+   */
   private static void writeBenchmarkResults(long[] results) throws Exception {
     System.out.println("Writing benchmark results to " + getBenchmarkFile());
     File f = new File(getBenchmarkFile());
