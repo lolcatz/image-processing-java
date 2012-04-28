@@ -173,6 +173,9 @@ public class Main {
     return operations.toArray(new Operation[operations.size()]);
   }
 
+  /*
+   * Counts the average values for every row of the matrix.
+   */
   private static long[] average(long[][] data) {
     long[] average = new long[data.length];
     for (int i = 0; i< data.length; i++) {
